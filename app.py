@@ -9,6 +9,10 @@ import sqlite3
 def manda_o_pix():
     return "<h2>Se a tela apagou, tá devendo</h2>"
 
+@app.route("/")
+def bem_vindo():
+    return "<h2>Bem vindo!</h2>"
+
 
 def init_db():
 # sqlite3 crie o arquivo database.db e se conecte com a variável conn
@@ -49,6 +53,26 @@ def doar():
         conn.commit()
 
         return jsonify({"mensagem":"Livro cadastrado com sucesso"}), 201
+    
+@app.route("/livros", methods=["GET"])
+def listar_livros():
+
+    with sqlite3.connect("database.db") as conn:
+        livros =  conn.execute("SELECT * FROM LIVROS").fetchall()
+
+        livros_formatados = []
+
+        for item in livros:
+            dicionario_livros ={
+                "id":item[0],
+                "titulo":item[1],
+                "categoria":item[2],
+                "autor":item[3],
+                "image_url":item[4]
+            }
+            livros_formatados.append(dicionario_livros)
+
+    return jsonify(livros_formatados), 200
 
 
 # Se o arquivo app.py for o arquivo principal da nossa aplicação, rode a api no modo de depuração
