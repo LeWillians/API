@@ -77,4 +77,5 @@ def listar_livros():
 
 # Se o arquivo app.py for o arquivo principal da nossa aplicação, rode a api no modo de depuração
 if __name__ == "__main__":
+    
     app.run(debug=True)
